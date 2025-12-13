@@ -20,7 +20,6 @@ export const protect = async (req, res, next) => {
             res.status(401).json({ message: "Not authorized, token failed" });
         }
     } else if (req.headers["google-id"]) {
-        // Optional Google login
         const user = await User.findOne({ googleId: req.headers["google-id"] });
         if (!user) return res.status(401).json({ message: "Google ID not recognized" });
         req.user = user;

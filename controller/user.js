@@ -47,7 +47,6 @@ export const getProfile = asyncHandler(async (req, res) => {
     res.json(user);
 });
 
-// UPDATE PROFILE
 export const updateProfile = asyncHandler(async (req, res) => {
     const updated = await modifyUserProfile(req.user._id, req.body);
     res.json(updated);

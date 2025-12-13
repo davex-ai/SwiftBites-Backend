@@ -2,7 +2,7 @@ import mongoose from "mongoose"
 
 const productSchema = mongoose.Schema({
     name: { type: String, required: true },
-    images: { type: String, required: true },    // use this syntax for images "/uploads/products/whatever name .png",
+    images: { type: String, required: true },   
     price: { type: Number, required: true },
     stock: { type: Number, default: 0 },
     category: { type: String, required: true },

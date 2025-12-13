@@ -1,6 +1,5 @@
-// server.js
 import dotenv from 'dotenv';
-dotenv.config(); // ✅ runs first
+dotenv.config(); 
 
 console.log('MONGO_URI:', process.env.MONGO_URI); 
 
@@ -8,8 +7,6 @@ import express from 'express';
 import cors from 'cors';
 import productRoutes from "./route/product.js";
 import { connectDB } from './utils/db.js'; 
-import Product from './model/Product.js';
-import products from './seed.js';
 
 const app = express();
 app.use(cors());
