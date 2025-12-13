@@ -12,7 +12,7 @@
 ---
 
 ## 🚀 Overview  
-SwiftBliss Backend is a production-ready **REST API** powering the Swift Bliss eCommerce experience.  
+SwiftBites Backend is a production-ready **REST API** powering the SwiftBites eCommerce experience.  
 Built with **Express**, **MongoDB**, and **JWT Authentication**, this API handles:
 
 - 🔐 User registration, login, and email verification  
