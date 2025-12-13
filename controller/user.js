@@ -12,15 +12,15 @@ export const generateToken = (id) => {
 };
 
 export const registerUser = async (req, res) => {
-    const { name, email, password } = req.body;
+    const { name, email, password, address, phoneNo, city, country } = req.body;
 
-    if (!name || !email || !password)
+    if (!name || !email || !password || !address || !phoneNo || !city || !country )
         return res.status(400).json({ message: "All fields are required" });
 
     const existingUser = await findUserByEmail(email);
     if (existingUser) return res.status(400).json({ message: "User already exists" });
 
-    const user = await createUser({ name, email, password });
+    const user = await createUser({ name, email, password, address, phoneNo, city, country  });
     res.status(201).json({
         _id: user._id,
         name: user.name,
@@ -49,7 +49,7 @@ export const loginUser = async (req, res) => {
 
 export const googleLogin = async (req, res) => {
     const { name, email, googleId } = req.body;
-    if (!googleId) return res.status(400).json({ message: "Google ID required" });
+    if (!googleId || !email) return res.status(400).json({ message: "Google ID and email required" });
 
     let user = await findUserByGoogleId(googleId);
     if (!user) {
@@ -61,6 +61,7 @@ export const googleLogin = async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
+        hasFullProfile: !!(user.address && user.city && user.country && user.phoneNo),
         token: generateToken(user._id)
     });
 };

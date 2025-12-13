@@ -3,7 +3,13 @@ import { connectDB } from "../utils/db.js";
 
 export async function createUser(data) {
     await connectDB();
-    return await User.create(data);
+    try{
+        return await User.create(data);
+    }catch{
+        console.error("User creation error", err);
+        throw err
+        
+    }
 }
 
 export async function findUserByEmail(email) {
