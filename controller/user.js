@@ -1,53 +1,78 @@
 import jwt from "jsonwebtoken";
-import bcrypt from "bcryptjs";
-import { asyncHandler } from "../middleware/asyncHandler.js";
-import {createUser, findUserByEmail, findUserProfile, modifyUserProfile} from "../utils/user.js";
+import {
+    createUser,
+    findUserByEmail,
+    findUserProfile,
+    modifyUserProfile,
+    findUserByGoogleId
+} from "../utils/user.js";
 
-const genToken = (id) => {
+export const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" });
 };
 
- export const registerUser = asyncHandler(async (req, res) => {
+export const registerUser = async (req, res) => {
     const { name, email, password } = req.body;
 
-    const exists = await findUserByEmail(email);
-    if (exists) return res.status(400).json({ message: "User already exists" });
+    if (!name || !email || !password)
+        return res.status(400).json({ message: "All fields are required" });
 
-    const hashed = await bcrypt.hash(password, 10);
+    const existingUser = await findUserByEmail(email);
+    if (existingUser) return res.status(400).json({ message: "User already exists" });
 
-    const user = await createUser({ name, email, password: hashed });
-
+    const user = await createUser({ name, email, password });
     res.status(201).json({
         _id: user._id,
         name: user.name,
         email: user.email,
-        token: genToken(user._id)
+        role: user.role,
+        token: generateToken(user._id)
     });
-});
+};
 
-export const loginUser = asyncHandler(async (req, res) => {
+export const loginUser = async (req, res) => {
     const { email, password } = req.body;
 
     const user = await findUserByEmail(email);
-    if (!user) return res.status(400).json({ message: "Invalid credentials" });
-
-    const match = await bcrypt.compare(password, user.password);
-    if (!match) return res.status(400).json({ message: "Invalid credentials" });
+    if (!user || user.password !== password) {
+        return res.status(401).json({ message: "Invalid credentials" });
+    }
 
     res.json({
         _id: user._id,
         name: user.name,
         email: user.email,
-        token: genToken(user._id)
+        role: user.role,
+        token: generateToken(user._id)
     });
-});
+};
 
-export const getProfile = asyncHandler(async (req, res) => {
+export const googleLogin = async (req, res) => {
+    const { name, email, googleId } = req.body;
+    if (!googleId) return res.status(400).json({ message: "Google ID required" });
+
+    let user = await findUserByGoogleId(googleId);
+    if (!user) {
+        user = await createUser({ name, email, googleId });
+    }
+
+    res.json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        token: generateToken(user._id)
+    });
+};
+
+export const getProfile = async (req, res) => {
     const user = await findUserProfile(req.user._id);
+    if (!user) return res.status(404).json({ message: "User not found" });
     res.json(user);
-});
+};
 
-export const updateProfile = asyncHandler(async (req, res) => {
-    const updated = await modifyUserProfile(req.user._id, req.body);
-    res.json(updated);
-});
+// UPDATE PROFILE
+export const updateProfile = async (req, res) => {
+    const updatedUser = await modifyUserProfile(req.user._id, req.body);
+    res.json(updatedUser);
+};

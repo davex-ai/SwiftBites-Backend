@@ -5,4 +5,6 @@ const notificationSchema = mongoose.Schema({
     user: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
     read: {type: Boolean}
 }, {timestamps: true})
-export default mongoose.model("Notification", notificationSchema)
+
+const Notification = mongoose.model("Notification", notificationSchema)
+export default Notification;

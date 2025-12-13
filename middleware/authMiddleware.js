@@ -1,10 +1,8 @@
 import jwt from "jsonwebtoken";
-import User from "../models/User.js";
-import { connectDB } from "../utils/db.js";
+import { findUserByGoogleId } from "../utils/user.js";
+import { findUserProfile } from "../utils/user.js";
 
 export const protect = async (req, res, next) => {
-    await connectDB();
-
     let token;
 
     if (
@@ -14,17 +12,17 @@ export const protect = async (req, res, next) => {
         try {
             token = req.headers.authorization.split(" ")[1];
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
-            req.user = await User.findById(decoded.id).select("-password");
+            req.user = await findUserProfile(decoded.id);
             next();
         } catch (error) {
-            res.status(401).json({ message: "Not authorized, token failed" });
+            return res.status(401).json({ message: "Not authorized, token failed" });
         }
     } else if (req.headers["google-id"]) {
-        const user = await User.findOne({ googleId: req.headers["google-id"] });
+        const user = await findUserByGoogleId(req.headers["google-id"]);
         if (!user) return res.status(401).json({ message: "Google ID not recognized" });
         req.user = user;
         next();
     } else {
-        res.status(401).json({ message: "Not authorized, no token" });
+        return res.status(401).json({ message: "Not authorized, no token" });
     }
 };
