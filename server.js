@@ -16,8 +16,10 @@ app.use(cors());
 app.use(express.json());
 
 await connectDB(); 
-await Product.insertMany(products)
-console.log(" 72+ products seeded");
+
+// Used to populate DB
+// await Product.insertMany(products)
+// console.log(" 72+ products seeded");
 
 app.use("/api/products", productRoutes);
 
