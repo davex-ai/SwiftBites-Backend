@@ -1,7 +1,6 @@
 import User from "../model/User.js";
 import { connectDB } from "../utils/db.js";
 
-// User CRUD operations
 export async function createUser(data) {
     await connectDB();
     return await User.create(data);
