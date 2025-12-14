@@ -16,11 +16,12 @@ export const registerUser = async (req, res) => {
 
     if (!name || !email || !password || !address || !phoneNo || !city || !country )
         return res.status(400).json({ message: "All fields are required" });
-
     const existingUser = await findUserByEmail(email);
     if (existingUser) return res.status(400).json({ message: "User already exists" });
+    
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = await createUser({ name, email, password, address, phoneNo, city, country  });
+    const user = await createUser({ name, email, password: hashedPassword, address, phoneNo, city, country  });
     res.status(201).json({
         _id: user._id,
         name: user.name,
@@ -34,8 +35,13 @@ export const loginUser = async (req, res) => {
     const { email, password } = req.body;
 
     const user = await findUserByEmail(email);
+    
     if (!user || user.password !== password) {
         return res.status(401).json({ message: "Invalid credentials" });
+    }
+    const isMatch = await bcrypt.compare(password, user.password)
+    if(!isMatch){
+         return res.status(401).json({ message: "Invalid credentials" });
     }
 
     res.json({
