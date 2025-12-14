@@ -6,7 +6,7 @@ console.log('MONGO_URI:', process.env.MONGO_URI);
 import express from 'express';
 import cors from 'cors';
 import productRoutes from "./route/product.js";
-import productRoutes from "./route/user.js";
+import userRoutes from "./route/user.js";
 import { connectDB } from './utils/db.js'; 
 
 const app = express();
@@ -20,7 +20,7 @@ await connectDB();
 // console.log(" 72+ products seeded");
 
 app.use("/api/products", productRoutes);
-app.use("/api", productRoutes);
+app.use("/api", userRoutes);
 
 
 const PORT = process.env.PORT || 5000;
