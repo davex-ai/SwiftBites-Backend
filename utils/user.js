@@ -5,7 +5,7 @@ export async function createUser(data) {
     await connectDB();
     try{
         return await User.create(data);
-    }catch{
+    }catch(err) {
         console.error("User creation error", err);
         throw err
         
