@@ -7,21 +7,13 @@ import express from 'express';
 import cors from 'cors';
 import productRoutes from "./route/product.js";
 import userRoutes from "./route/user.js";
-dotenv.config()
 import { connectDB } from './utils/db.js'; 
-import Product from './model/Product.js';
-import products from './scripts/product-seed.js';
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
 await connectDB(); 
-
-// Used to populate DB
-await Product.deleteMany({}); // ⚠️ ONLY in dev!
-await Product.insertMany(products)
-console.log(" 72+ products seeded");
 
 app.use("/api/products", productRoutes);
 app.use("/api", userRoutes);
