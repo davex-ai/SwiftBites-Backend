@@ -21,6 +21,7 @@ await connectDB();
 
 app.use("/api/products", productRoutes);
 app.use("/api", userRoutes);
+app.use('/uploads', express.static('uploads'));
 
 
 const PORT = process.env.PORT || 5000;
