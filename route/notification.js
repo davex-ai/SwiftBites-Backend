@@ -2,7 +2,7 @@
  import { createNotification, getNotifications, markAsRead } from '../controller/notification';
  const router = express.Router();
  
- const { protect } = require('../middleware/authMiddleware');
+ import { protect } from '../middleware/authMiddleware'
  
  router.post('/notification', protect, createNotification);
  router.get('/my-notification', protect, getNotifications);
