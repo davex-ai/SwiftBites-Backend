@@ -10,4 +10,4 @@ router.get('/my-cart', protect, getCart);
 router.patch('/cart/:id', protect, updateCartItem);
 router.delete('/cart-clear', protect, clearUserCart);
 
-module.exports = router;
+export default router
