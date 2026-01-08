@@ -1,4 +1,4 @@
-import { addToWishlist, getWishlist, removeFromWishlist } from "../utils/wishlist";
+import { addToWishlist, getWishlist, removeFromWishlist } from "../utils/wishlist.js";
 
 export async function addProductToWishlist(req, res) {
     try {
