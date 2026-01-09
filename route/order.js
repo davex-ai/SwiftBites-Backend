@@ -3,7 +3,8 @@ import {
     createOrder,
     getUserOrders,
     getOrderById,
-    updateOrderStatus
+    updateOrderStatus,
+    adminFind
 } from "../controller/order.js";
 
 const router = express.Router();
@@ -13,5 +14,6 @@ router.post("/orders", protect, createOrder);
 router.get("/my-orders", protect, getUserOrders);
 router.get("/orders/:id", protect, getOrderById);
 router.patch("/orders/:id", protect, admin, updateOrderStatus);
+router.get("/admin/orders", protect, admin, adminFind)
 
-export default router;
+ export default router;
