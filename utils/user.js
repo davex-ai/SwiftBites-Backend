@@ -24,7 +24,7 @@ export async function findUserByGoogleId(googleId) {
 
 export async function findUserProfile(id) {
     await connectDB();
-    return await User.findById(id).select("-password");
+    return await User.findById(id).select("name email role address city country phoneNo createdAt");
 }
 
 export async function modifyUserProfile(id, data) {
