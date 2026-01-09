@@ -7,7 +7,7 @@ import {
 } from "../controller/order.js";
 
 const router = express.Router();
-import { protect, admin } from "../middleware/authMiddleware"
+import { protect, admin } from "../middleware/authMiddleware.js"
 
 router.post("/orders", protect, createOrder);
 router.get("/my-orders", protect, getUserOrders);
