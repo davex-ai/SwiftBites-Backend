@@ -27,9 +27,11 @@ export async function removeFromCart(req, res) {
     }
 }
 
+// In controller/cart.js
 export async function updateCartItem(req, res) {
     try {
-        const { productId, quantity } = req.body;
+        const { quantity } = req.body;
+        const productId = req.params.id; 
         const cart = await updateCartItemQuantity(req.user.id, productId, quantity);
         res.status(200).json(cart);
     } catch (err) {
