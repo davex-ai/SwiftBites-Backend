@@ -20,6 +20,8 @@ const orderSchema = mongoose.Schema({
 
     totalAmount: { type: Number, required: true },
 
+    enum: ['cash', 'card'],
+
     status: {
     type: String,
     enum: ['pending', 'paid', 'processing', 'shipped', 'delivered', 'cancelled'],

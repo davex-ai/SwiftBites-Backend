@@ -4,7 +4,7 @@ export async function createOrder(req, res) {
     try {
         const orderData = {
             ...req.body,
-            user: req.user.id   
+            user: req.user._id   
         };
 
         const order = await placeOrder(orderData);
@@ -17,7 +17,7 @@ export async function createOrder(req, res) {
 
 export async function getUserOrders(req, res) {
     try {
-        const orders = await getMyOrders(req.user.id);
+        const orders = await getMyOrders(req.user._id);
 
         res.status(200).json(orders);
     } catch (err) {
