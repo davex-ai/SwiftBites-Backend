@@ -1,3 +1,4 @@
+import Order from "../model/Order.js";
 import { placeOrder, getMyOrders, getOrder} from "../utils/order.js";
 
 export async function createOrder(req, res) {
