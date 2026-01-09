@@ -51,7 +51,7 @@ export const loginUser = async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
-        createdAt: user.createdAt, // 👈 ADD THIS
+        createdAt: user.createdAt,  
         token: generateToken(user._id)
     });
 };
